@@ -38,3 +38,43 @@ function containsNearbyDuplicate(nums: number[], k: number): boolean {
 };
 ```
 两个 for 循环嵌套，没什么好说的。
+
+------------------------------
+
+滑动窗口：
+利用 set 里数据的唯一性，维护一个长度为 k 的哈希表，如果出现重复值，说明在 k 的距离内有重复的元素
+每次遍历一个元素就把它加入到哈希表中，如果长度大于 k 就移除最前面的数字
+思路来源于：画解算法
+
+```js
+function containsNearbyDuplicate(nums: number[], k: number): boolean {
+    const s = new Set();
+    for (let i = 0; i < nums.length; i++) {
+        if (s.has(nums[i])) {
+            return true;
+        }
+        s.add(nums[i]);
+        if (s.size > k) {
+            s.delete(nums[i - k])
+        }
+    }
+    return false
+};
+```
+哈希表：
+遍历这个数组，然后以数组里元素的值为哈希表的 key，当前元素的下标为 value，如果遇到重复的值，判断重复元素这一次出现的下标和上一次存在哈希表里的
+下标 abs(这一次出现的下标 - 上一次出现的下标) <= k 
+
+```js
+function containsNearbyDuplicate(nums: number[], k: number): boolean {
+    const map = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        if (map.has(nums[i]) && (i - map.get(nums[i])) <= k) {
+            return true;
+        }
+        map.set(nums[i], i);
+    }
+    return false;
+};
+```
+

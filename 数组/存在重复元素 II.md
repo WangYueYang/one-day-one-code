@@ -78,3 +78,28 @@ function containsNearbyDuplicate(nums: number[], k: number): boolean {
 };
 ```
 
+方法二：
+使用哈希表，存储 nums1 每一个元素出现的次数， 然后遍历 nums2 如果哈希表里有对应的元素并且出现的次数大于 0 就把他添加到新数组里，然后把哈希表里存储的出现的次数减一
+
+```js
+function intersect(nums1: number[], nums2: number[]): number[] {
+    const map = {}
+    const arr = []
+    for (let i of nums1) {
+        if (map[i]) {
+            map[i]++
+        } else {
+            map[i] = 1
+        }
+    }
+
+    for (let j of nums2) {
+        if (map[j]) {
+            arr.push(j)
+            map[j]--
+        }
+    }
+
+    return arr
+};
+```
